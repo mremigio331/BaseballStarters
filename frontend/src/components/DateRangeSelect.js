@@ -13,15 +13,11 @@ const DateRangeSelect = () => {
     };
 
     const handleEndDateChange = (event) => {
-        if (event.Date < startDate) {
-            console.log('nope');
-        } else {
-            dispatch({ type: 'SET_END_DATE', payload: event });
-        }
+        dispatch({ type: 'SET_END_DATE', payload: event });
     };
 
     return (
-            <ColumnLayout columns={2} variant="text-grid">
+        <ColumnLayout columns={2} variant="text-grid">
             <div>
                 <DatePicker
                     value={startDate}
@@ -40,7 +36,6 @@ const DateRangeSelect = () => {
                 />
             </div>
         </ColumnLayout>
-            
     );
 };
 

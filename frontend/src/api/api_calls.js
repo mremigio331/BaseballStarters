@@ -153,11 +153,11 @@ const fullStartersCheck = (starters, gameSummary, date) => {
         });
 
         const allStarted = Object.values(startersDict).every((value) => value.started === true);
-        const startsCheckDict = { date: date, allStarted: allStarted, check: startersDict };
+        const allPlayed = Object.values(startersDict).every((value) => value.played === true);
+        const startsCheckDict = { date: date, allStarted: allStarted, allPlayed: allPlayed, check: startersDict };
         return startsCheckDict;
     } catch (error) {
-        console.error('Error identifying starters:', error);
-        const startsCheckDict = { date: date, allStarted: false, check: startersDict };
+        const startsCheckDict = { date: date, allStarted: false, allPlayed: false, check: startersDict };
         return startsCheckDict;
     }
 };
