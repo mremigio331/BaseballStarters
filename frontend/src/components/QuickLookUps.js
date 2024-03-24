@@ -3,6 +3,8 @@ import { List, Button, Drawer, ListItem, ListItemButton, ListItemIcon, ListSubhe
 import { CalendarToday as CalendarTodayIcon, SportsBaseball as SportsBaseballIcon } from '@mui/icons-material';
 import * as FamilyBet from '../constants/FamilyBet';
 import { useData, ActionTypes } from '../contexts/DataContext';
+import dayjs from 'dayjs';
+
 
 const QuickLookUps = () => {
     const [open, setOpen] = useState(false);
@@ -15,21 +17,25 @@ const QuickLookUps = () => {
     const currentYear = new Date().getFullYear();
     const quickSeasonSelects = Array.from({ length: currentYear - 2019 }, (_, index) => {
         const year = currentYear - index;
-        return { text: year.toString(), icon: <CalendarTodayIcon /> };
+        return { id: 'year', text: year.toString(), icon: <CalendarTodayIcon /> };
     });
 
     const preSets = [
-        { text: 'Family Bet', icon: <SportsBaseballIcon /> }
+        { id: 'presets', text: 'Family Bet', icon: <SportsBaseballIcon /> }
     ];
 
     const handleItemClick = (item) => {
         console.log('Clicked:', item);
-        if (item === 'Family Bet') {
+        if ( item.id == 'presets' && item.text === 'Family Bet') {
             // Dispatch action to set selected team and players
             dispatch({ type: ActionTypes.SET_SELECTED_TEAM, payload: FamilyBet.FAMILY_BET_TEAM });
             dispatch({ type: ActionTypes.SET_SELECTED_PLAYERS, payload: FamilyBet.FAMILY_BET_SELECTED_PLAYERS });
             dispatch({ type: ActionTypes.SET_START_DATE, payload: FamilyBet.FAMILY_BET_START_DATE });
             dispatch({ type: ActionTypes.SET_END_DATE, payload: FamilyBet.FAMILY_BET_END_DATE });
+        }
+        else if (item.id == 'year') {
+            dispatch({ type: ActionTypes.SET_START_DATE, payload: dayjs(`${item.text}-02-01`).startOf('day') });
+            dispatch({ type: ActionTypes.SET_END_DATE, payload: dayjs(`${item.text}-11-01`).startOf('day') })
         }
     };
 
@@ -51,7 +57,7 @@ const QuickLookUps = () => {
                 </ListItem>
                 {preSets.map((option, index) => (
                     <ListItem key={option.text} >
-                        <ListItemButton onClick={() => handleItemClick(option.text)}>
+                        <ListItemButton onClick={() => handleItemClick(option)}>
                             <ListItemIcon>
                                 {option.icon}
                             </ListItemIcon>
@@ -66,7 +72,7 @@ const QuickLookUps = () => {
                 </ListItem>
                 {quickSeasonSelects.map((option, index) => (
                     <ListItem key={option.text} >
-                        <ListItemButton onClick={() => handleItemClick(option.text)}>
+                        <ListItemButton onClick={() => handleItemClick(option)}>
                             <ListItemIcon>
                                 {option.icon}
                             </ListItemIcon>
