@@ -27,11 +27,13 @@ const QuickLookUps = () => {
     const handleItemClick = (item) => {
         console.log('Clicked:', item);
         if ( item.id == 'presets' && item.text === 'Family Bet') {
-            // Dispatch action to set selected team and players
             dispatch({ type: ActionTypes.SET_SELECTED_TEAM, payload: FamilyBet.FAMILY_BET_TEAM });
             dispatch({ type: ActionTypes.SET_SELECTED_PLAYERS, payload: FamilyBet.FAMILY_BET_SELECTED_PLAYERS });
             dispatch({ type: ActionTypes.SET_START_DATE, payload: FamilyBet.FAMILY_BET_START_DATE });
             dispatch({ type: ActionTypes.SET_END_DATE, payload: FamilyBet.FAMILY_BET_END_DATE });
+            dispatch({ type: ActionTypes.SET_REGULAR_SEASON, payload: FamilyBet.FAMILY_BET_REGULAR_SEASON });
+            dispatch({ type: ActionTypes.SET_POST_SEASON, payload: FamilyBet.FAMILY_BET_POST_SEASON });
+            dispatch({ type: ActionTypes.SET_PRE_SEASON, payload: FamilyBet.FAMILY_BET_PRE_SEASON });
         }
         else if (item.id == 'year') {
             dispatch({ type: ActionTypes.SET_START_DATE, payload: dayjs(`${item.text}-02-01`).startOf('day') });

@@ -23,6 +23,9 @@ const initialState = {
     startDate: startDate,
     endDate: endDate,
     currentDate: currentDate,
+    regularSeason: true,
+    postSeason: false,
+    presSeason: false
 };
 
 export const ActionTypes = {
@@ -30,6 +33,9 @@ export const ActionTypes = {
     SET_SELECTED_PLAYERS: 'SET_SELECTED_PLAYERS',
     SET_START_DATE: 'SET_START_DATE',
     SET_END_DATE: 'SET_END_DATE',
+    SET_REGULAR_SEASON: 'SET_REGULAR_SEASON',
+    SET_POST_SEASON: 'SET_POST_SEASON',
+    SET_PRE_SEASON: 'SET_PRE_SEASON'
 };
 
 const reducer = (state, action) => {
@@ -42,6 +48,12 @@ const reducer = (state, action) => {
             return { ...state, startDate: action.payload };
         case ActionTypes.SET_END_DATE:
             return { ...state, endDate: action.payload };
+            case ActionTypes.SET_REGULAR_SEASON:
+            return { ...state, regularSeason: action.payload };
+            case ActionTypes.SET_POST_SEASON:
+            return { ...state, postSeason: action.payload };
+            case ActionTypes.SET_PRE_SEASON:
+            return { ...state, preSeason: action.payload };
         default:
             return state;
     }

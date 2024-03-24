@@ -119,3 +119,7 @@ const today = dayjs().startOf
 const endDate2024Season = dayjs('2024-09-29').startOf('day')
 
 export const FAMILY_BET_END_DATE = today < endDate2024Season ? today : endDate2024Season
+
+export const FAMILY_BET_REGULAR_SEASON = true
+export const FAMILY_BET_POST_SEASON = false
+export const FAMILY_BET_PRE_SEASON = false
