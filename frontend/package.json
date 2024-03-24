@@ -1,0 +1,37 @@
+{
+    "name": "baseballstarters",
+    "version": "1.0.0",
+    "description": "Website that allows users to see how many games multiple baseball players started in",
+    "main": "main.js",
+    "scripts": {
+        "build": "webpack --mode production",
+        "start": "webpack serve --mode development",
+        "format": "npx prettier --write ."
+    },
+    "author": "Matthew Remigio",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/core": "7.24.3",
+        "@babel/preset-react": "7.24.1",
+        "@cloudscape-design/components": "^3.0.583",
+        "@emotion/react": "^11.11.4",
+        "@emotion/styled": "^11.11.0",
+        "@mui/lab": "^5.0.0-alpha.169",
+        "@mui/material": "^5.15.14",
+        "@mui/x-date-pickers": "^7.0.0",
+        "@tanstack/react-query": "^5.28.6",
+        "axios": "^1.6.8",
+        "babel-loader": "9.1.3",
+        "css-loader": "6.10.0",
+        "date-fns": "^3.6.0",
+        "dayjs": "^1.11.10",
+        "react-router-dom": "^6.22.3",
+        "style-loader": "3.3.4",
+        "webpack-cli": "5.1.4"
+    },
+    "devDependencies": {
+        "@babel/preset-env": "^7.24.3",
+        "html-webpack-plugin": "^5.6.0",
+        "webpack-dev-server": "^5.0.4"
+    }
+}
