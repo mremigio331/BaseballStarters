@@ -41,19 +41,20 @@ const teamRosterApiCall = async (teamId) => {
     return response.data;
 };
 
-export const getStatistics = async (startDate, endDate, players, team) => {
+export const getStatistics = async (startDate, endDate, players, team, seasonTypes) => {
     try {
         const datesLookup = DatesIdentifier(startDate, endDate);
         let games = [];
         let gameSummaries = [];
         let finalData = [];
+
         await Promise.all(
             datesLookup.map(async (date) => {
                 const dateGames = await ESPNAPI(date);
                 dateGames.events.map((game) => games.push(game));
             }),
         );
-        const scrubbedGames = await GamesScrubber(team, games);
+        const scrubbedGames = await GamesScrubber(team, games, seasonTypes);
         await Promise.all(
             scrubbedGames.map(async (specificGame) => {
                 const gameSummary = await ESPNSumaryAPI(specificGame.id);
@@ -112,14 +113,16 @@ const ESPNSumaryAPI = async (gameId) => {
     return response.data;
 };
 
-const GamesScrubber = async (team, games) => {
+const GamesScrubber = async (team, games, seasonTypes) => {
     let allGames = [];
 
     games.forEach((game) => {
         const homeTeam = game.competitions[0].competitors[0].team.displayName;
         const awayTeam = game.competitions[0].competitors[1].team.displayName;
+        const gameType = game.season.slug;
+        const status = game.status.type.name;
 
-        if (homeTeam === team || awayTeam === team) {
+        if ((homeTeam === team || awayTeam === team) && seasonTypes.includes(gameType) && status == 'STATUS_FINAL') {
             allGames.push(game);
         }
     });
@@ -160,4 +163,13 @@ const fullStartersCheck = (starters, gameSummary, date) => {
         const startsCheckDict = { date: date, allStarted: false, allPlayed: false, check: startersDict };
         return startsCheckDict;
     }
+};
+
+export const seasonTypeLookUp = (regularSeason, postSeason, presSeason) => {
+    let seasonTypes = [];
+    regularSeason == true && seasonTypes.push('regular-season');
+    postSeason == true && seasonTypes.push('post-season');
+    presSeason == true && seasonTypes.push('preseason');
+
+    return seasonTypes;
 };

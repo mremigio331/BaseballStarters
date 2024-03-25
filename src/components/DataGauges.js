@@ -3,9 +3,6 @@ import { Grid, Typography, Container, Card, CardContent } from '@mui/material';
 import { Gauge } from '@mui/x-charts/Gauge';
 
 const DataGauges = ({ data, selectedPlayers }) => {
-    console.log('data', data)
-    console.log('selectedPlayers', selectedPlayers)
-
     return (
         <Container maxWidth="lg" style={{ marginTop: '40px', padding: '20px' }}>
             <FullDataGuages data={data} />
@@ -14,20 +11,18 @@ const DataGauges = ({ data, selectedPlayers }) => {
     );
 };
 
-const FullDataGuages = ({data}) => {
-
+const FullDataGuages = ({ data }) => {
     let allStartedCount = 0;
-    let allPlayedCount = 0
+    let allPlayedCount = 0;
 
-    data.forEach(item => {
+    data.forEach((item) => {
         if (item.allStarted) {
             allStartedCount++;
         }
         if (item.allPlayed) {
             allPlayedCount++;
         }
-        });
-    
+    });
 
     const gaugeData = [
         { value: allStartedCount, maxValue: data.length, text: 'All Started' },
@@ -60,18 +55,16 @@ const FullDataGuages = ({data}) => {
             ))}
         </Grid>
     );
+};
 
-}
-
-const SelectedPlayerDataGuages = ({data, selectedPlayers}) => {
-    
+const SelectedPlayerDataGuages = ({ data, selectedPlayers }) => {
     let individualPlayerMetrics = [];
 
-    selectedPlayers.forEach(player => {
+    selectedPlayers.forEach((player) => {
         let playerStartedCount = 0;
         let playerPlayedCount = 0;
 
-        data.forEach(item => {
+        data.forEach((item) => {
             if (item.check[player]) {
                 if (item.check[player].started) {
                     playerStartedCount++;
@@ -86,12 +79,10 @@ const SelectedPlayerDataGuages = ({data, selectedPlayers}) => {
             player: player,
             gaugeData: [
                 { value: playerStartedCount, maxValue: data.length, text: 'Started' },
-                { value: playerPlayedCount, maxValue: data.length, text: 'Played' }
-            ]
+                { value: playerPlayedCount, maxValue: data.length, text: 'Played' },
+            ],
         });
     });
-
-    console.log(individualPlayerMetrics)
 
     return (
         <Container maxWidth="lg" style={{ marginTop: '40px', padding: '20px' }}>
@@ -130,6 +121,6 @@ const SelectedPlayerDataGuages = ({data, selectedPlayers}) => {
             </Grid>
         </Container>
     );
-}
+};
 
 export default DataGauges;

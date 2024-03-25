@@ -108,18 +108,13 @@ export const FAMILY_BET_TEAM = {
     ],
 };
 
-export const FAMILY_BET_SELECTED_PLAYERS = [
-    'Aaron Judge', 'Giancarlo Stanton', 'Juan Soto'
-]
+export const FAMILY_BET_SELECTED_PLAYERS = ['Aaron Judge', 'Giancarlo Stanton', 'Juan Soto'];
 
-export const FAMILY_BET_START_DATE = dayjs('2024-03-01').startOf('day')
+export const FAMILY_BET_START_DATE = dayjs('2024-03-01').startOf('day');
+const today = dayjs().startOf('day');
+const endDate2024Season = dayjs('2024-09-29').startOf('day');
+export const FAMILY_BET_END_DATE = today.isBefore(endDate2024Season) ? today : endDate2024Season;
 
-const today = dayjs().startOf
-
-const endDate2024Season = dayjs('2024-09-29').startOf('day')
-
-export const FAMILY_BET_END_DATE = today < endDate2024Season ? today : endDate2024Season
-
-export const FAMILY_BET_REGULAR_SEASON = true
-export const FAMILY_BET_POST_SEASON = false
-export const FAMILY_BET_PRE_SEASON = false
+export const FAMILY_BET_REGULAR_SEASON = true;
+export const FAMILY_BET_POST_SEASON = false;
+export const FAMILY_BET_PRE_SEASON = false;

@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import '../styles/StatsGrid.css';
 
-const StatsCard = ({ date, allStarted, check }) => {
+const IndividualGameStatsCards = ({ date, allStarted, check }) => {
     return (
         <Card>
             <CardContent>
@@ -30,15 +30,25 @@ const StatsCard = ({ date, allStarted, check }) => {
     );
 };
 
-export const WhoStarted = ({ data }) => {
+export const StatsCards = ({ data, isLoading }) => {
+    const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     return (
-        <Grid container spacing={2}>
-            {data.map((item, index) => (
-                <Grid key={index} item xs={12} sm={4} md={3}>
-                    <StatsCard {...item} />
+        <>
+            {isLoading ? ( // Render loading indicator if isLoading is true
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
                 </Grid>
-            ))}
-        </Grid>
+            ) : (
+                <Grid container spacing={2}>
+                    {sortedData.map((item, index) => (
+                        <Grid key={index} item xs={12} sm={4} md={3}>
+                            <IndividualGameStatsCards {...item} />
+                        </Grid>
+                    ))}
+                </Grid>
+            )}
+        </>
     );
 };
 
