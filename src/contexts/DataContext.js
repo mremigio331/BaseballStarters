@@ -37,7 +37,7 @@ export const ActionTypes = {
     SET_REGULAR_SEASON: 'SET_REGULAR_SEASON',
     SET_POST_SEASON: 'SET_POST_SEASON',
     SET_PRE_SEASON: 'SET_PRE_SEASON',
-    SET_SEASON_TYPES: 'SET_SEASON_TYPES'
+    SET_SEASON_TYPES: 'SET_SEASON_TYPES',
 };
 
 const reducer = (state, action) => {

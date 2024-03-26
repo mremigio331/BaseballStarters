@@ -8,7 +8,7 @@ const PlayersDropDown = () => {
     const { state, dispatch } = useData();
     const { selectedTeam, selectedPlayers } = state;
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isRefetching, isError } = useQuery({
         queryKey: ['players', selectedTeam?.abbreviation],
         queryFn: () => getPlayersForTeam(selectedTeam?.abbreviation),
         enabled: !!selectedTeam?.abbreviation, // Only run the query if selectedTeam exists
@@ -18,7 +18,7 @@ const PlayersDropDown = () => {
         dispatch({ type: 'SET_SELECTED_PLAYERS', payload: event.target.value });
     };
 
-    if (isLoading) {
+    if (isRefetching) {
         return <CircularProgress />;
     }
 

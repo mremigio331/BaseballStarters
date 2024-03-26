@@ -27,7 +27,7 @@ const QuickLookUps = () => {
     const currentYear = new Date().getFullYear();
     const quickSeasonSelects = Array.from({ length: currentYear - 2019 }, (_, index) => {
         const year = currentYear - index;
-        return { id: 'year', text: year.toString(), icon: <CalendarTodayIcon /> };
+        return { id: 'year', text: `${year.toString()} Season`, year: year.toString(), icon: <CalendarTodayIcon /> };
     });
 
     const preSets = [{ id: 'presets', text: 'Family Bet', icon: <SportsBaseballIcon /> }];
@@ -42,9 +42,9 @@ const QuickLookUps = () => {
             dispatch({ type: ActionTypes.SET_POST_SEASON, payload: FamilyBet.FAMILY_BET_POST_SEASON });
             dispatch({ type: ActionTypes.SET_PRE_SEASON, payload: FamilyBet.FAMILY_BET_PRE_SEASON });
         } else if (item.id == 'year') {
-            const startDate = dayjs(`${item.text}-02-01`).startOf('day');
+            const startDate = dayjs(`${item.year}-02-01`).startOf('day');
             const today = dayjs().startOf('day');
-            const endOfSeasonDate = dayjs(`${item.text}-11-01`).startOf('day')
+            const endOfSeasonDate = dayjs(`${item.year}-11-01`).startOf('day');
             const endDate = today.isBefore(endOfSeasonDate) ? today : endOfSeasonDate;
 
             dispatch({ type: ActionTypes.SET_START_DATE, payload: startDate });

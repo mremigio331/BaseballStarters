@@ -16,60 +16,60 @@ const SeasonTypeDropDown = () => {
         { type: 'post-season', text: 'Post Season' },
     ];
 
-
     const selectedSeasonTypes = () => {
-        let newItems = []
+        let newItems = [];
         seasonTypes.map((type) => {
             switch (type) {
                 case 'preseason':
                     newItems.push('Pre Season');
-                  break;
+                    break;
                 case 'regular-season':
                     newItems.push('Regular Season');
-                  break; 
+                    break;
                 case 'post-season':
                     newItems.push('Post Season');
-                    break
+                    break;
                 case 'Pre Season':
                     newItems.push('Pre Season');
                     break;
-                    case 'Regular Season':
-                        newItems.push('Regular Season');
-                    break; 
-                    case 'Post Season':
-                        newItems.push('Post Season');
-                  break;
-            }})
+                case 'Regular Season':
+                    newItems.push('Regular Season');
+                    break;
+                case 'Post Season':
+                    newItems.push('Post Season');
+                    break;
+            }
+        });
 
-        return newItems       
-    }
+        return newItems;
+    };
 
     const handleChange = (event) => {
-        let newItems = []
+        let newItems = [];
         event.target.value.forEach((target) => {
             switch (target) {
                 case 'preseason':
                     newItems.push('preseason');
-                  break;
+                    break;
                 case 'regular-season':
                     newItems.push('regular-season');
-                  break; 
+                    break;
                 case 'post-season':
                     newItems.push('post-season');
-                    break
+                    break;
                 case 'Pre Season':
                     newItems.push('preseason');
                     break;
-                    case 'Regular Season':
-                        newItems.push('regular-season');
-                    break; 
-                    case 'Post Season':
-                        newItems.push('post-season');
-                  break;
-            }})
+                case 'Regular Season':
+                    newItems.push('regular-season');
+                    break;
+                case 'Post Season':
+                    newItems.push('post-season');
+                    break;
+            }
+        });
 
         dispatch({ type: ActionTypes.SET_SEASON_TYPES, payload: newItems });
-        
     };
 
     return (

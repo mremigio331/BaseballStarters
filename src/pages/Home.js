@@ -41,14 +41,14 @@ const DatePickerComponent = () => {
     );
 };
 
-const StatsCardsComonent = ({ data, selectedPlayers, isLoading }) => {
+const StatsCardsComonent = ({ data, selectedPlayers }) => {
     return (
         <div style={{ marginBottom: '20px' }}>
             <Typography component={'span'}>
-                <DataGauges data={data} selectedPlayers={selectedPlayers} isLoading={isLoading} />
+                <DataGauges data={data} selectedPlayers={selectedPlayers} />
             </Typography>
             <Typography component={'span'}>
-                <StatsCards data={data} isLoading={isLoading} />
+                <StatsCards data={data} />
             </Typography>
         </div>
     );
@@ -57,27 +57,14 @@ const StatsCardsComonent = ({ data, selectedPlayers, isLoading }) => {
 const Home = () => {
     const { state } = useData();
     const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes } = state;
-    const [canQuery, setCanQuery] = useState(false); // Use useState for state management
 
-    const { data, isLoading, isError } = useQuery({
-        queryKey: [
-            'statistics',
-            startDate,
-            endDate,
-            selectedPlayers,
-            selectedTeam?.displayName,
-            seasonTypes,
-        ],
-        queryFn: () =>
-            getStatistics(
-                startDate,
-                endDate,
-                selectedPlayers,
-                selectedTeam?.displayName,
-                seasonTypes
-            ),
+    const { data, isRefetching, isLoading, isError } = useQuery({
+        queryKey: ['statistics', startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes],
+        queryFn: () => getStatistics(startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes),
         enabled: !!selectedTeam?.displayName && selectedPlayers.length !== 0,
     });
+
+    console.log(isLoading, isRefetching);
 
     return (
         <Container maxWidth="xl" style={{ marginTop: '40px', marginBottom: '40px' }}>
@@ -95,21 +82,13 @@ const Home = () => {
                     {selectedTeam != EMPTY_TEAM_SELECT && <PlayersComponent />}
                     {selectedPlayers.length !== 0 && <DatePickerComponent />}
                     {selectedPlayers.length !== 0 && <SeasonTypeDropDown />}
-                    {data != undefined && (
-                        <>
-                            {isLoading ? ( // Render loading indicator if isLoading is true
-                                <Grid container justifyContent="center" alignItems="center">
-                                    <CircularProgress />
-                                </Grid>
-                            ) : (
-                                <StatsCardsComonent
-                                    data={data}
-                                    selectedPlayers={selectedPlayers}
-                                    isLoading={isLoading}
-                                />
-                            )}
-                        </>
-                    )}
+                    {isRefetching ||
+                        (isLoading && ( // Render loading indicator if isRefetching is true
+                            <Grid container justifyContent="center" alignItems="center">
+                                <CircularProgress />
+                            </Grid>
+                        ))}
+                    {data != undefined && <StatsCardsComonent data={data} selectedPlayers={selectedPlayers} />}
                 </Grid>
             </Grid>
         </Container>

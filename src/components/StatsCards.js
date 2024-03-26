@@ -30,25 +30,17 @@ const IndividualGameStatsCards = ({ date, allStarted, check }) => {
     );
 };
 
-export const StatsCards = ({ data, isLoading }) => {
+export const StatsCards = ({ data }) => {
     const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     return (
-        <>
-            {isLoading ? ( // Render loading indicator if isLoading is true
-                <Grid container justifyContent="center" alignItems="center">
-                    <CircularProgress />
+        <Grid container spacing={2}>
+            {sortedData.map((item, index) => (
+                <Grid key={index} item xs={12} sm={4} md={3}>
+                    <IndividualGameStatsCards {...item} />
                 </Grid>
-            ) : (
-                <Grid container spacing={2}>
-                    {sortedData.map((item, index) => (
-                        <Grid key={index} item xs={12} sm={4} md={3}>
-                            <IndividualGameStatsCards {...item} />
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-        </>
+            ))}
+        </Grid>
     );
 };
 
