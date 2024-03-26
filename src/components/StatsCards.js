@@ -7,7 +7,7 @@ import '../styles/StatsGrid.css';
 
 const IndividualGameStatsCards = ({ date, allStarted, check }) => {
     return (
-        <Card>
+        <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent>
                 <Typography component={'span'} variant="h6" gutterBottom>
                     Date: {new Date(date).toLocaleDateString()}
@@ -31,13 +31,13 @@ const IndividualGameStatsCards = ({ date, allStarted, check }) => {
 };
 
 export const StatsCards = ({ data }) => {
-    const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-
     return (
         <Grid container spacing={2}>
-            {sortedData.map((item, index) => (
+            {data.map((item, index) => (
                 <Grid key={index} item xs={12} sm={4} md={3}>
-                    <IndividualGameStatsCards {...item} />
+                    <div style={{ height: '100%' }}>
+                        <IndividualGameStatsCards {...item} />
+                    </div>
                 </Grid>
             ))}
         </Grid>

@@ -17,9 +17,9 @@ import QuickLookUps from '../components/QuickLookUps'; // Import the QuickLookUp
 
 const PlayersComponent = () => {
     return (
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '10px' }}>
             <Typography component={'span'} variant="body1" gutterBottom>
-                Select your players
+                Select Players
             </Typography>
             <Typography component={'span'}>
                 <PlayersDropDown />
@@ -30,9 +30,9 @@ const PlayersComponent = () => {
 
 const DatePickerComponent = () => {
     return (
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '10px' }}>
             <Typography component={'span'} variant="body1" gutterBottom>
-                Select your date range
+                Select Date Range
             </Typography>
             <Typography component={'span'}>
                 <DateRangeSelect />
@@ -43,7 +43,7 @@ const DatePickerComponent = () => {
 
 const StatsCardsComonent = ({ data, selectedPlayers }) => {
     return (
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '10px' }}>
             <Typography component={'span'}>
                 <DataGauges data={data} selectedPlayers={selectedPlayers} />
             </Typography>
@@ -67,15 +67,15 @@ const Home = () => {
     console.log(isLoading, isRefetching);
 
     return (
-        <Container maxWidth="xl" style={{ marginTop: '40px', marginBottom: '40px' }}>
+        <Container maxWidth="xl" style={{ marginTop: '20px', marginBottom: '20px' }}>
             <Typography component={'span'} variant="h2" gutterBottom>
                 Baseball Starters {<QuickLookUps />}
             </Typography>
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={9}>
-                    <div style={{ marginBottom: '20px' }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <div style={{ marginBottom: '10px' }}>
                         <Typography component={'span'} variant="body1" gutterBottom>
-                            Select A Team
+                            Select Team
                         </Typography>
                         <TeamsDropDown />
                     </div>
@@ -83,8 +83,8 @@ const Home = () => {
                     {selectedPlayers.length !== 0 && <DatePickerComponent />}
                     {selectedPlayers.length !== 0 && <SeasonTypeDropDown />}
                     {isRefetching ||
-                        (isLoading && ( // Render loading indicator if isRefetching is true
-                            <Grid container justifyContent="center" alignItems="center">
+                        (isLoading && (
+                            <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '10px' }}>
                                 <CircularProgress />
                             </Grid>
                         ))}
