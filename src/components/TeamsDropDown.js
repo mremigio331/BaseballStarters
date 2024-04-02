@@ -17,6 +17,7 @@ const TeamsDropDown = () => {
         const selectedTeam = data.find((item) => item.team.displayName === event.target.value);
         dispatch({ type: 'SET_SELECTED_TEAM', payload: selectedTeam.team });
         dispatch({ type: 'SET_SELECTED_PLAYERS', payload: [] });
+        dispatch({ type: ActionTypes.SET_FAMILY_BET, payload: false });
     };
 
     if (isLoading) {

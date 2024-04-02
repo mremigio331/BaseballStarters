@@ -27,6 +27,7 @@ const initialState = {
     regularSeason: true,
     postSeason: false,
     presSeason: false,
+    familyBet: false,
 };
 
 export const ActionTypes = {
@@ -38,6 +39,7 @@ export const ActionTypes = {
     SET_POST_SEASON: 'SET_POST_SEASON',
     SET_PRE_SEASON: 'SET_PRE_SEASON',
     SET_SEASON_TYPES: 'SET_SEASON_TYPES',
+    SET_FAMILY_BET: 'SET_FAMILY_BET',
 };
 
 const reducer = (state, action) => {
@@ -58,6 +60,8 @@ const reducer = (state, action) => {
             return { ...state, preSeason: action.payload };
         case ActionTypes.SET_SEASON_TYPES:
             return { ...state, seasonTypes: action.payload };
+        case ActionTypes.SET_FAMILY_BET:
+            return { ...state, familyBet: action.payload };
         default:
             return state;
     }

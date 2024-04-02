@@ -41,6 +41,7 @@ const QuickLookUps = () => {
             dispatch({ type: ActionTypes.SET_REGULAR_SEASON, payload: FamilyBet.FAMILY_BET_REGULAR_SEASON });
             dispatch({ type: ActionTypes.SET_POST_SEASON, payload: FamilyBet.FAMILY_BET_POST_SEASON });
             dispatch({ type: ActionTypes.SET_PRE_SEASON, payload: FamilyBet.FAMILY_BET_PRE_SEASON });
+            dispatch({ type: ActionTypes.SET_FAMILY_BET, payload: true });
         } else if (item.id == 'year') {
             const startDate = dayjs(`${item.year}-02-01`).startOf('day');
             const today = dayjs().startOf('day');
@@ -49,6 +50,7 @@ const QuickLookUps = () => {
 
             dispatch({ type: ActionTypes.SET_START_DATE, payload: startDate });
             dispatch({ type: ActionTypes.SET_END_DATE, payload: endDate });
+            dispatch({ type: ActionTypes.SET_FAMILY_BET, payload: false });
         }
     };
 

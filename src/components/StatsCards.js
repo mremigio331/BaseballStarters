@@ -34,7 +34,7 @@ export const StatsCards = ({ data }) => {
     return (
         <Grid container spacing={2}>
             {data.map((item, index) => (
-                <Grid key={index} item xs={12} sm={4} md={3}>
+                <Grid key={index} item xs={12} sm={2} md={2}>
                     <div style={{ height: '100%' }}>
                         <IndividualGameStatsCards {...item} />
                     </div>

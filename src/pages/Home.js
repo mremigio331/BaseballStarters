@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import CircularProgress from '@mui/material/CircularProgress';
-import Grid from '@mui/material/Grid';
+import { Tabs, Tab, Button, Typography, Container, CircularProgress, Grid } from '@mui/material';
 import TeamsDropDown from '../components/TeamsDropDown';
 import PlayersDropDown from '../components/PlayersDropDown';
 import DateRangeSelect from '../components/DateRangeSelect';
@@ -13,7 +9,8 @@ import DataGauges from '../components/DataGauges';
 import { useQuery } from '@tanstack/react-query';
 import { getStatistics } from '../api/api_calls';
 import { useData, EMPTY_TEAM_SELECT } from '../contexts/DataContext';
-import QuickLookUps from '../components/QuickLookUps'; // Import the QuickLookUps component
+import QuickLookUps from '../components/QuickLookUps';
+import FamilyBetsTable from '../components/FamilyBetsTable';
 
 const PlayersComponent = () => {
     return (
@@ -41,22 +38,11 @@ const DatePickerComponent = () => {
     );
 };
 
-const StatsCardsComonent = ({ data, selectedPlayers }) => {
-    return (
-        <div style={{ marginBottom: '10px' }}>
-            <Typography component={'span'}>
-                <DataGauges data={data} selectedPlayers={selectedPlayers} />
-            </Typography>
-            <Typography component={'span'}>
-                <StatsCards data={data} />
-            </Typography>
-        </div>
-    );
-};
-
 const Home = () => {
     const { state } = useData();
-    const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes } = state;
+    const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes, familyBet } = state;
+
+    const [selectedTab, setSelectedTab] = useState(0); // State to manage selected tab
 
     const { data, isRefetching, isLoading, isError } = useQuery({
         queryKey: ['statistics', startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes],
@@ -64,7 +50,15 @@ const Home = () => {
         enabled: !!selectedTeam?.displayName && selectedPlayers.length !== 0,
     });
 
-    console.log(isLoading, isRefetching);
+    React.useEffect(() => {
+        if (selectedTab === 3 && familyBet === false) {
+            setSelectedTab(1);
+        }
+    }, [familyBet, selectedTab]);
+
+    const handleTabChange = (event, newValue) => {
+        setSelectedTab(newValue);
+    };
 
     return (
         <Container maxWidth="xl" style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -88,7 +82,25 @@ const Home = () => {
                                 <CircularProgress />
                             </Grid>
                         ))}
-                    {data != undefined && <StatsCardsComonent data={data} selectedPlayers={selectedPlayers} />}
+                    <Tabs value={selectedTab} onChange={handleTabChange} variant="fullWidth">
+                        <Tab label="All Games Overview" />
+                        <Tab label="Individual Game Stats" />
+                        {familyBet === true && <Tab label="Family Bet" />}
+                    </Tabs>
+                    {selectedTab === 0 && data !== undefined && (
+                        <Typography component={'span'}>
+                            <DataGauges data={data} selectedPlayers={selectedPlayers} />
+                        </Typography>
+                    )}
+
+                    {selectedTab === 1 && data !== undefined && (
+                        <Typography component={'span'}>
+                            <StatsCards data={data} />
+                        </Typography>
+                    )}
+                    {selectedTab === 2 && (
+                        <FamilyBetsTable data={data} isLoading={isLoading} isRefetching={isRefetching} />
+                    )}
                 </Grid>
             </Grid>
         </Container>
