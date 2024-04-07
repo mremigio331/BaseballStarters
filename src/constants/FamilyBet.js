@@ -122,12 +122,12 @@ export const FAMILY_BET_PRE_SEASON = false;
 export const FAMILY_BET_DESCRIPTION = '';
 export const FAMILY_BET_BETS = [
     { name: 'Tito', games: 40, projectedWinner: false, stillIn: true, percentage: 24.69 },
-    { name: 'Dad', games: 30, projectedWinner: false, stillIn: true, percentage: 18.52 },
+    { name: 'Fernando', games: 30, projectedWinner: false, stillIn: true, percentage: 18.52 },
     { name: 'Matt', games: 10, projectedWinner: false, stillIn: true, percentage: 6.17 },
     { name: 'Samantha', games: 20, projectedWinner: false, stillIn: true, percentage: 12.35 },
     { name: 'Estela', games: 54, projectedWinner: false, stillIn: true, percentage: 33.33 },
     { name: 'Anthony', games: 41, projectedWinner: false, stillIn: true, percentage: 25.31 },
-    { name: 'Mom', games: 60, projectedWinner: false, stillIn: true, percentage: 37.04 },
+    { name: 'Lisbeth', games: 60, projectedWinner: false, stillIn: true, percentage: 37.04 },
     { name: 'Larry', games: 11, projectedWinner: false, stillIn: true, percentage: 6.79 },
     { name: 'Mercedes', games: 50, projectedWinner: false, stillIn: true, percentage: 30.86 },
     { name: 'Jenny', games: 8, projectedWinner: false, stillIn: true, percentage: 4.94 },
