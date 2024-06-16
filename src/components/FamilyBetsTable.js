@@ -79,7 +79,13 @@ const FamilyBetsTable = ({ data, isLoading, isRefetching }) => {
                     {sortedBets.map((bet, index) => (
                         <TableRow key={index}>
                             <TableCell>
-                                {bet.name}{' '}
+                                {allStartedCount > bet.games ? (
+                                    <span style={{ marginLeft: '5px', color: 'red', textDecoration: 'line-through' }}>
+                                        {bet.name}
+                                    </span>
+                                ) : (
+                                    bet.name
+                                )}
                                 {bet.projectedWinner && (
                                     <span style={{ marginLeft: '5px', color: 'green' }}>Projected Winner</span>
                                 )}

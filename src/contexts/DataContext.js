@@ -1,18 +1,16 @@
-import React, { createContext, useState, useContext } from 'react';
+// src/contexts/DataContext.js
+import React, { createContext, useReducer, useContext } from 'react';
 import dayjs from 'dayjs';
-// Define a default value for team
+
 export const EMPTY_TEAM_SELECT = {};
 export const EMPTY_PLAYERS_ARRAY = [];
 
 const currentDate = dayjs();
 
-// Get the start date (current date)
 const endDate = currentDate.startOf('day');
 
-// Get the end date (7 days later)
 const startDate = currentDate.subtract(7, 'day').startOf('day');
 
-// Format the dates as strings
 const formatDateString = (date) => {
     return date.format('YYYY-MM-DD');
 };
@@ -26,7 +24,7 @@ const initialState = {
     seasonTypes: ['regular-season'],
     regularSeason: true,
     postSeason: false,
-    presSeason: false,
+    preSeason: false,
     familyBet: false,
 };
 
@@ -40,6 +38,7 @@ export const ActionTypes = {
     SET_PRE_SEASON: 'SET_PRE_SEASON',
     SET_SEASON_TYPES: 'SET_SEASON_TYPES',
     SET_FAMILY_BET: 'SET_FAMILY_BET',
+    RESET: 'RESET',
 };
 
 const reducer = (state, action) => {
@@ -62,6 +61,8 @@ const reducer = (state, action) => {
             return { ...state, seasonTypes: action.payload };
         case ActionTypes.SET_FAMILY_BET:
             return { ...state, familyBet: action.payload };
+        case ActionTypes.RESET:
+            return initialState;
         default:
             return state;
     }
@@ -70,12 +71,11 @@ const reducer = (state, action) => {
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     return <DataContext.Provider value={{ state, dispatch }}>{children}</DataContext.Provider>;
 };
 
-// Create a custom hook to consume the context
 export const useData = () => {
     const dataContext = useContext(DataContext);
     if (!dataContext) {

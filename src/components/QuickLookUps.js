@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     List,
     Button,
@@ -10,6 +10,8 @@ import {
     ListItemText,
     Divider,
     Box,
+    useTheme,
+    useMediaQuery,
 } from '@mui/material';
 import { CalendarToday as CalendarTodayIcon, SportsBaseball as SportsBaseballIcon } from '@mui/icons-material';
 import * as FamilyBet from '../constants/FamilyBet';
@@ -18,7 +20,11 @@ import dayjs from 'dayjs';
 
 const QuickLookUps = () => {
     const [open, setOpen] = useState(false);
-    const { dispatch } = useData(); // Get the dispatch function from the DataContext
+    const { dispatch } = useData();
+    const theme = useTheme();
+    // Using Material-UI's useMediaQuery hook to check for mobile screen size
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    console.log('isMobile', isMobile);
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -54,10 +60,12 @@ const QuickLookUps = () => {
         }
     };
 
+    const drawerWidth = isMobile ? '100%' : 250;
+
     const DrawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: drawerWidth }} role="presentation" onClick={toggleDrawer(false)}>
             <List
-                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                sx={{ width: 250, maxWidth: 360, bgcolor: 'background.paper' }}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
                 subheader={
@@ -98,7 +106,15 @@ const QuickLookUps = () => {
     return (
         <div>
             <Button onClick={toggleDrawer(true)}>Quick Look Ups</Button>
-            <Drawer open={open} onClose={toggleDrawer(false)}>
+            <Drawer
+                open={open}
+                onClose={toggleDrawer(false)}
+                ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                }}
+                variant={isMobile ? 'temporary' : 'persistent'}
+                anchor={isMobile ? 'bottom' : 'left'}
+            >
                 {DrawerList}
             </Drawer>
         </div>

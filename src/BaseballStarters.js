@@ -1,72 +1,52 @@
-import * as React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline'; // Import CssBaseline to reset default styles
-import { useData } from './contexts/DataContext';
+import React from 'react';
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { DataProvider } from './contexts/DataContext';
 import NavBar from './navigation/NavBar';
 import Home from './pages/Home';
 
 const BaseballStarters = () => {
     document.title = 'Baseball Starters';
-    const { state } = useData();
-    const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes, familyBet } = state;
 
-    const defaultTheme = createTheme({
+    let defaultTheme = createTheme({
         palette: {
             primary: {
-                main: '#1976d2', // A default blue color
+                main: '#1976d2',
             },
             secondary: {
-                main: '#dc004e', // A default pink color
+                main: '#dc004e',
             },
             error: {
-                main: '#f44336', // A default red color for error messages
+                main: '#f44336',
             },
             background: {
-                default: '#fafafa', // A default light background color
+                default: '#fafafa',
+            },
+            appBar: {
+                main: '#4caf50',
             },
         },
         typography: {
             fontFamily: ['Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
         },
     });
+    defaultTheme = responsiveFontSizes(defaultTheme);
 
-    const darkTheme = createTheme({
-        palette: {
-            mode: 'dark', // Set the mode to dark
-            // Define your dark mode colors here
-            primary: {
-                main: '#90caf9', // Example primary color in dark mode
-            },
-            // Add more color definitions as needed
-        },
-    });
-
-    const teamSelectedMode = createTheme({
-        palette: {
-            mode: 'teamSelected', // Set the mode to dark
-            // Define your dark mode colors here
-            primary: {
-                main: '#132448', // Example primary color in dark mode
-            },
-            background: {
-                paper: '#424242', // Background color for paper elements
-                default: '#c4ced4', // Default background color
-            },
-        },
-    });
+    const theme = defaultTheme; // This is a placeholder. Use your logic to switch themes.
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <CssBaseline /> {/* Apply default styles reset */}
-            <div>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <DataProvider>
                 <div style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
                     <NavBar />
                 </div>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    {/* Add more routes as needed */}
                 </Routes>
-            </div>
+            </DataProvider>
         </ThemeProvider>
     );
 };

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Tabs, Tab, Button, Typography, Container, CircularProgress, Grid } from '@mui/material';
+import React, { useState, useMemo, useCallback } from 'react';
+import { Tabs, Tab, Typography, Container, CircularProgress, Grid } from '@mui/material';
 import TeamsDropDown from '../components/TeamsDropDown';
 import PlayersDropDown from '../components/PlayersDropDown';
 import DateRangeSelect from '../components/DateRangeSelect';
@@ -11,32 +11,29 @@ import { getStatistics } from '../api/api_calls';
 import { useData, EMPTY_TEAM_SELECT } from '../contexts/DataContext';
 import QuickLookUps from '../components/QuickLookUps';
 import FamilyBetsTable from '../components/FamilyBetsTable';
+import useSyncDataWithUrl from '../hooks/useSyncDataWithUrl'; // Import the custom hook
 
-const PlayersComponent = () => {
-    return (
-        <div style={{ marginBottom: '10px' }}>
-            <Typography component={'span'} variant="body1" gutterBottom>
-                Select Players
-            </Typography>
-            <Typography component={'span'}>
-                <PlayersDropDown />
-            </Typography>
-        </div>
-    );
-};
+const PlayersComponent = () => (
+    <div style={{ marginBottom: '10px' }}>
+        <Typography component={'span'} variant="body1" gutterBottom>
+            Select Players
+        </Typography>
+        <Typography component={'span'}>
+            <PlayersDropDown />
+        </Typography>
+    </div>
+);
 
-const DatePickerComponent = () => {
-    return (
-        <div style={{ marginBottom: '10px' }}>
-            <Typography component={'span'} variant="body1" gutterBottom>
-                Select Date Range
-            </Typography>
-            <Typography component={'span'}>
-                <DateRangeSelect />
-            </Typography>
-        </div>
-    );
-};
+const DatePickerComponent = () => (
+    <div style={{ marginBottom: '10px' }}>
+        <Typography component={'span'} variant="body1" gutterBottom>
+            Select Date Range
+        </Typography>
+        <Typography component={'span'}>
+            <DateRangeSelect />
+        </Typography>
+    </div>
+);
 
 const Home = () => {
     const { state } = useData();
@@ -44,8 +41,15 @@ const Home = () => {
 
     const [selectedTab, setSelectedTab] = useState(0); // State to manage selected tab
 
+    useSyncDataWithUrl(); // Use the custom hook
+
+    const queryKey = useMemo(
+        () => ['statistics', startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes],
+        [startDate, endDate, selectedPlayers, selectedTeam, seasonTypes],
+    );
+
     const { data, isRefetching, isLoading, isError } = useQuery({
-        queryKey: ['statistics', startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes],
+        queryKey,
         queryFn: () => getStatistics(startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes),
         enabled: !!selectedTeam?.displayName && selectedPlayers.length !== 0,
     });
@@ -56,9 +60,16 @@ const Home = () => {
         }
     }, [familyBet, selectedTab]);
 
-    const handleTabChange = (event, newValue) => {
+    const handleTabChange = useCallback((event, newValue) => {
         setSelectedTab(newValue);
-    };
+    }, []);
+
+    const playersComponent = useMemo(() => selectedTeam != EMPTY_TEAM_SELECT && <PlayersComponent />, [selectedTeam]);
+    const datePickerComponent = useMemo(
+        () => selectedPlayers.length !== 0 && <DatePickerComponent />,
+        [selectedPlayers],
+    );
+    const seasonTypeDropDown = useMemo(() => selectedPlayers.length !== 0 && <SeasonTypeDropDown />, [selectedPlayers]);
 
     return (
         <Container maxWidth="xl" style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -73,9 +84,9 @@ const Home = () => {
                         </Typography>
                         <TeamsDropDown />
                     </div>
-                    {selectedTeam != EMPTY_TEAM_SELECT && <PlayersComponent />}
-                    {selectedPlayers.length !== 0 && <DatePickerComponent />}
-                    {selectedPlayers.length !== 0 && <SeasonTypeDropDown />}
+                    {playersComponent}
+                    {datePickerComponent}
+                    {seasonTypeDropDown}
                     {isRefetching ||
                         (isLoading && (
                             <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '10px' }}>

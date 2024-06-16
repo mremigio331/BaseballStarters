@@ -5,13 +5,13 @@ import { Gauge } from '@mui/x-charts/Gauge';
 const DataGauges = ({ data, selectedPlayers }) => {
     return (
         <Container maxWidth="lg" style={{ marginTop: '40px', padding: '20px' }}>
-            <FullDataGuages data={data} />
+            <FullDataGauges data={data} />
             <SelectedPlayerDataGuages data={data} selectedPlayers={selectedPlayers} />
         </Container>
     );
 };
 
-const FullDataGuages = ({ data }) => {
+const FullDataGauges = ({ data }) => {
     let allStartedCount = 0;
     let allPlayedCount = 0;
 
