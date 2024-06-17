@@ -28,13 +28,13 @@
         "date-fns": "^3.6.0",
         "dayjs": "^1.11.10",
         "react-router-dom": "^6.22.3",
-        "style-loader": "3.3.4",
-        "webpack-cli": "5.1.4"
+        "style-loader": "3.3.4"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.24.3",
         "html-webpack-plugin": "^5.6.0",
-        "webpack-dev-server": "^5.0.4",
-        "webpack-cli": "^4.0.0"
+        "webpack": "^5.0.0",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^5.0.4"
     }
 }
