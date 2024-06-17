@@ -40,6 +40,8 @@ const Home = () => {
     const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes, familyBet } = state;
 
     const [selectedTab, setSelectedTab] = useState(0); // State to manage selected tab
+    console.log('familyBet', familyBet);
+    console.log('selectedTab', selectedTab);
 
     useSyncDataWithUrl(); // Use the custom hook
 
@@ -55,8 +57,8 @@ const Home = () => {
     });
 
     React.useEffect(() => {
-        if (selectedTab === 3 && familyBet === false) {
-            setSelectedTab(1);
+        if (selectedTab === 2 && familyBet === false) {
+            setSelectedTab(0);
         }
     }, [familyBet, selectedTab]);
 

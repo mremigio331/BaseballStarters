@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    Container,
     CircularProgress,
     Table,
     TableBody,
@@ -16,32 +15,47 @@ const FamilyBetsTable = ({ data, isLoading, isRefetching }) => {
     const [sortedBy, setSortedBy] = useState('games');
     const [ascending, setAscending] = useState(true);
 
-    let allStartedCount = 0;
-
-    if (isLoading || isRefetching || data == undefined) {
+    if (isLoading || isRefetching || !data) {
         return <CircularProgress />;
     }
 
-    data != undefined &&
-        data.forEach((item) => {
-            if (item.allStarted) {
-                allStartedCount++;
-            }
-        });
-
+    // Calculate allStartedCount and allStartedPercentage
+    const allStartedCount = data.reduce((count, item) => count + (item.allStarted ? 1 : 0), 0);
     const allStartedPercentage = (allStartedCount / data.length) * 100;
 
-    console.log(allStartedPercentage);
+    // Calculate differences based on allStartedPercentage and find the closest entry
+    let closestEntry = null;
+    let minDifference = Infinity;
+    let maxGamesEntry = null;
 
-    const differences = FamilyBet.FAMILY_BET_BETS.map((bet) => Math.abs(allStartedPercentage - bet.percentage));
+    FamilyBet.FAMILY_BET_BETS.forEach((bet) => {
+        bet.projectedWinner = false;
+        bet.winner = false;
+        bet.stillIn = false;
 
-    const minDifferenceIndex = differences.indexOf(Math.min(...differences));
+        const difference = Math.abs(allStartedPercentage - bet.percentage);
+        if (difference < minDifference) {
+            closestEntry = bet;
+            minDifference = difference;
+        }
 
-    FamilyBet.FAMILY_BET_BETS[minDifferenceIndex].projectedWinner = true;
+        if (!maxGamesEntry || bet.games > maxGamesEntry.games) {
+            maxGamesEntry = bet;
+        }
+    });
 
-    console.log('FAMILY_BET_BETS', FamilyBet.FAMILY_BET_BETS);
+    if (closestEntry) {
+        closestEntry.projectedWinner = true;
+    }
 
-    console.log('allStartedCount', allStartedCount);
+    // Check if there's only one team with stillIn set to true
+    const stillInTeams = data.filter((item) => item.stillIn);
+    if (stillInTeams.length === 1) {
+        stillInTeams[0].winner = true;
+    } else if (stillInTeams.length === 0 && maxGamesEntry) {
+        maxGamesEntry.winner = true;
+        maxGamesEntry.stillIn = true;
+    }
 
     const handleSort = (sortBy) => {
         if (sortedBy === sortBy) {
@@ -64,8 +78,6 @@ const FamilyBetsTable = ({ data, isLoading, isRefetching }) => {
 
     const sortedBets = FamilyBet.FAMILY_BET_BETS.slice().sort(compareValues);
 
-    console.log(sortedBets);
-
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -79,14 +91,15 @@ const FamilyBetsTable = ({ data, isLoading, isRefetching }) => {
                     {sortedBets.map((bet, index) => (
                         <TableRow key={index}>
                             <TableCell>
-                                {allStartedCount > bet.games ? (
+                                {allStartedCount > bet.games && !bet.winner ? (
                                     <span style={{ marginLeft: '5px', color: 'red', textDecoration: 'line-through' }}>
                                         {bet.name}
                                     </span>
                                 ) : (
                                     bet.name
                                 )}
-                                {bet.projectedWinner && (
+                                {bet.winner && <span style={{ marginLeft: '5px', color: 'green' }}>Winner</span>}
+                                {!bet.winner && bet.projectedWinner && (
                                     <span style={{ marginLeft: '5px', color: 'green' }}>Projected Winner</span>
                                 )}
                             </TableCell>
