@@ -12,16 +12,21 @@ import BaseballStarters from './BaseballStarters';
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById('app')).render(
-    <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <ThemeProvider theme={theme}>
-                    <DataProvider>
-                        <BaseballStarters />
-                    </DataProvider>
-                </ThemeProvider>
-            </LocalizationProvider>
-        </QueryClientProvider>
-    </BrowserRouter>,
+const container = document.getElementById('app');
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
+
+root.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <ThemeProvider theme={theme}>
+                        <DataProvider>
+                            <BaseballStarters />
+                        </DataProvider>
+                    </ThemeProvider>
+                </LocalizationProvider>
+            </QueryClientProvider>
+        </BrowserRouter>
+    </React.StrictMode>,
 );
