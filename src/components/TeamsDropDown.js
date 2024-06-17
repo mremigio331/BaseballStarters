@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTeams } from '../api/api_calls';
-import { useData } from '../contexts/DataContext';
+import { useData, ActionTypes } from '../contexts/DataContext';
 
 const TeamsDropDown = () => {
     const { state, dispatch } = useData();

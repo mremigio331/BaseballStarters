@@ -39,11 +39,9 @@ const Home = () => {
     const { state } = useData();
     const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes, familyBet } = state;
 
-    const [selectedTab, setSelectedTab] = useState(0); // State to manage selected tab
-    console.log('familyBet', familyBet);
-    console.log('selectedTab', selectedTab);
+    const [selectedTab, setSelectedTab] = useState(0);
 
-    useSyncDataWithUrl(); // Use the custom hook
+    useSyncDataWithUrl();
 
     const queryKey = useMemo(
         () => ['statistics', startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes],

@@ -22,9 +22,7 @@ const QuickLookUps = () => {
     const [open, setOpen] = useState(false);
     const { dispatch } = useData();
     const theme = useTheme();
-    // Using Material-UI's useMediaQuery hook to check for mobile screen size
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    console.log('isMobile', isMobile);
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
