@@ -6,7 +6,7 @@ const DataGauges = ({ data, selectedPlayers }) => {
     return (
         <Container maxWidth="lg" style={{ marginTop: '40px', padding: '20px' }}>
             <FullDataGauges data={data} />
-            <SelectedPlayerDataGuages data={data} selectedPlayers={selectedPlayers} />
+            <SelectedPlayerDataGauges data={data} selectedPlayers={selectedPlayers} />
         </Container>
     );
 };
@@ -57,7 +57,7 @@ const FullDataGauges = ({ data }) => {
     );
 };
 
-const SelectedPlayerDataGuages = ({ data, selectedPlayers }) => {
+const SelectedPlayerDataGauges = ({ data, selectedPlayers }) => {
     let individualPlayerMetrics = [];
 
     selectedPlayers.forEach((player) => {

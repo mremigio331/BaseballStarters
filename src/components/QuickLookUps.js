@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     List,
     Button,
@@ -37,7 +37,7 @@ const QuickLookUps = () => {
     const preSets = [{ id: 'presets', text: 'Family Bet', icon: <SportsBaseballIcon /> }];
 
     const handleItemClick = (item) => {
-        if (item.id == 'presets' && item.text === 'Family Bet') {
+        if (item.id === 'presets' && item.text === 'Family Bet') {
             dispatch({ type: ActionTypes.SET_SELECTED_TEAM, payload: FamilyBet.FAMILY_BET_TEAM });
             dispatch({ type: ActionTypes.SET_SELECTED_PLAYERS, payload: FamilyBet.FAMILY_BET_SELECTED_PLAYERS });
             dispatch({ type: ActionTypes.SET_START_DATE, payload: FamilyBet.FAMILY_BET_START_DATE });
@@ -46,7 +46,7 @@ const QuickLookUps = () => {
             dispatch({ type: ActionTypes.SET_POST_SEASON, payload: FamilyBet.FAMILY_BET_POST_SEASON });
             dispatch({ type: ActionTypes.SET_PRE_SEASON, payload: FamilyBet.FAMILY_BET_PRE_SEASON });
             dispatch({ type: ActionTypes.SET_FAMILY_BET, payload: true });
-        } else if (item.id == 'year') {
+        } else if (item.id === 'year') {
             const startDate = dayjs(`${item.year}-02-01`).startOf('day');
             const today = dayjs().startOf('day');
             const endOfSeasonDate = dayjs(`${item.year}-11-01`).startOf('day');

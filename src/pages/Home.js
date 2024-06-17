@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Tabs, Tab, Typography, Container, CircularProgress, Grid } from '@mui/material';
+import { Tabs, Tab, Typography, Container, CircularProgress, Grid, Button, Box } from '@mui/material';
 import TeamsDropDown from '../components/TeamsDropDown';
 import PlayersDropDown from '../components/PlayersDropDown';
 import DateRangeSelect from '../components/DateRangeSelect';
@@ -8,10 +8,10 @@ import { StatsCards } from '../components/StatsCards';
 import DataGauges from '../components/DataGauges';
 import { useQuery } from '@tanstack/react-query';
 import { getStatistics } from '../api/api_calls';
-import { useData, EMPTY_TEAM_SELECT } from '../contexts/DataContext';
+import { useData, EMPTY_TEAM_SELECT, ActionTypes } from '../contexts/DataContext';
 import QuickLookUps from '../components/QuickLookUps';
 import FamilyBetsTable from '../components/FamilyBetsTable';
-import useSyncDataWithUrl from '../hooks/useSyncDataWithUrl'; // Import the custom hook
+import useSyncDataWithUrl from '../hooks/useSyncDataWithUrl';
 
 const PlayersComponent = () => (
     <div style={{ marginBottom: '10px' }}>
@@ -36,7 +36,7 @@ const DatePickerComponent = () => (
 );
 
 const Home = () => {
-    const { state } = useData();
+    const { state, dispatch } = useData();
     const { selectedTeam, selectedPlayers, startDate, endDate, seasonTypes, familyBet } = state;
 
     const [selectedTab, setSelectedTab] = useState(0);
@@ -47,7 +47,6 @@ const Home = () => {
         () => ['statistics', startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes],
         [startDate, endDate, selectedPlayers, selectedTeam, seasonTypes],
     );
-
     const { data, isRefetching, isLoading, isError } = useQuery({
         queryKey,
         queryFn: () => getStatistics(startDate, endDate, selectedPlayers, selectedTeam?.displayName, seasonTypes),
@@ -64,7 +63,11 @@ const Home = () => {
         setSelectedTab(newValue);
     }, []);
 
-    const playersComponent = useMemo(() => selectedTeam != EMPTY_TEAM_SELECT && <PlayersComponent />, [selectedTeam]);
+    const clearSelections = useCallback(() => {
+        dispatch({ type: ActionTypes.RESET });
+    }, [dispatch]);
+
+    const playersComponent = useMemo(() => selectedTeam !== EMPTY_TEAM_SELECT && <PlayersComponent />, [selectedTeam]);
     const datePickerComponent = useMemo(
         () => selectedPlayers.length !== 0 && <DatePickerComponent />,
         [selectedPlayers],
@@ -74,8 +77,17 @@ const Home = () => {
     return (
         <Container maxWidth="xl" style={{ marginTop: '20px', marginBottom: '20px' }}>
             <Typography component={'span'} variant="h2" gutterBottom>
-                Baseball Starters {<QuickLookUps />}
+                Baseball Starters
             </Typography>
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-start"
+                style={{ marginTop: '10px', gap: '10px' }}
+            >
+                <QuickLookUps />
+                <Button onClick={clearSelections}>Clear</Button>
+            </Box>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <div style={{ marginBottom: '10px' }}>
