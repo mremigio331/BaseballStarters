@@ -22,13 +22,28 @@ const allTeamsAPICall = async () => {
     return response.data;
 };
 
-export const getPlayersForTeam = async (abbreviation) => {
-    const playersArray = await teamRosterApiCall(StatsApiCodes[abbreviation]);
-    return playersArray.roster;
+export const getPlayersForTeam = async (abbreviation, years) => {
+    const playersArrayPromises = years.map((year) => teamRosterApiCall(StatsApiCodes[abbreviation], year));
+
+    const playersArray = await Promise.all(playersArrayPromises);
+
+    const allPlayers = playersArray.flatMap((playersData) => playersData.roster);
+
+    const uniquePlayersMap = new Map();
+    allPlayers.forEach((player) => {
+        if (!uniquePlayersMap.has(player.person.id)) {
+            uniquePlayersMap.set(player.person.id, player);
+        }
+    });
+
+    const uniquePlayers = Array.from(uniquePlayersMap.values());
+    uniquePlayers.sort((a, b) => a.person.fullName.localeCompare(b.person.fullName));
+
+    return uniquePlayers;
 };
 
-const teamRosterApiCall = async (teamId) => {
-    const requestURL = `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster`;
+const teamRosterApiCall = async (teamId, year) => {
+    const requestURL = `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=fullRoster&season=${year}`;
     const response = await axios
         .get(requestURL)
         .then((res) => {

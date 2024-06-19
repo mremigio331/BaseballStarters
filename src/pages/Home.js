@@ -69,7 +69,7 @@ const Home = () => {
 
     const playersComponent = useMemo(() => selectedTeam !== EMPTY_TEAM_SELECT && <PlayersComponent />, [selectedTeam]);
     const datePickerComponent = useMemo(
-        () => selectedPlayers.length !== 0 && <DatePickerComponent />,
+        () => selectedTeam !== EMPTY_TEAM_SELECT && <DatePickerComponent />,
         [selectedPlayers],
     );
     const seasonTypeDropDown = useMemo(() => selectedPlayers.length !== 0 && <SeasonTypeDropDown />, [selectedPlayers]);
@@ -96,8 +96,8 @@ const Home = () => {
                         </Typography>
                         <TeamsDropDown />
                     </div>
-                    {playersComponent}
                     {datePickerComponent}
+                    {playersComponent}
                     {seasonTypeDropDown}
                     {isRefetching ||
                         (isLoading && (
